@@ -8,6 +8,7 @@ import { messages } from "../../helpers/calendar-messages-gl";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "moment/locale/gl";
 import { CalendarEvent } from "./CalendarEvent";
+import { CalendarModal } from "./CalendarModal";
 
 moment.locale("gl");
 const localizer = momentLocalizer(moment);
@@ -69,6 +70,8 @@ export const CalendarScreen = () => {
           event: CalendarEvent,
         }}
       />
+
+      <CalendarModal />
     </div>
   );
 };
