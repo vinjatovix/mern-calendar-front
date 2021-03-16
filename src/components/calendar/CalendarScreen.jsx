@@ -11,6 +11,7 @@ import { CalendarEvent } from "./CalendarEvent";
 import { CalendarModal } from "./CalendarModal";
 import { useDispatch } from "react-redux";
 import { uiOpenModal } from "../../actions/ui";
+import { eventSetActive } from "../../actions/events";
 
 moment.locale("gl");
 const localizer = momentLocalizer(moment);
@@ -38,8 +39,9 @@ export const CalendarScreen = () => {
   const onDoubleClick = (e) => {
     dispatch(uiOpenModal());
   };
-  const onSelect = (e) => {
-    console.log(e);
+  const onSelectEvent = (e) => {
+    dispatch(eventSetActive(e));
+    console.log("click");
   };
   const onViewChange = (e) => {
     setLastView(e);
@@ -67,7 +69,7 @@ export const CalendarScreen = () => {
         messages={messages}
         eventPropGetter={eventStyleGetter}
         onDoubleClickEvent={onDoubleClick}
-        onSelectEvent={onSelect}
+        onSelectEvent={onSelectEvent}
         onView={onViewChange}
         view={lastView}
         components={{
