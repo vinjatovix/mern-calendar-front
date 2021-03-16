@@ -63,3 +63,13 @@ body {
   outline: none;
   border: 0px solid rgba(255, 255, 255, 0);
 }
+
+/* FABS */
+.fab {
+  border-radius: 100%;
+  bottom: 1rem;
+  font-size: 1rem;
+  padding: 1rem;
+  position: fixed;
+  right: 1rem;
+}
