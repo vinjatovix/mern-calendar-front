@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import DateTimePicker from "react-datetime-picker";
 import moment from "moment";
+import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { uiCloseModal } from "../../actions/ui";
 
 const customStyles = {
   content: {
@@ -16,21 +19,75 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 const now = moment().minutes(0).seconds(0).add(1, "hours");
-const now2 = moment().minutes(0).seconds(0).add(2, "hours");
+const now2 = now.clone().add(1, "hours");
 
 export const CalendarModal = () => {
+  const { modalOpen } = useSelector((state) => state.ui);
+  const dispatch = useDispatch();
+
   const [dateStart, setDateStart] = useState(now.toDate());
   const [dateEnd, setDateEnd] = useState(now2.toDate());
-  const closeModal = () => {};
+  const [titleValid, setTitleValid] = useState(true);
+
+  const [formValues, setFormValues] = useState({
+    title: "Evento",
+    notes: "",
+    start: now.toDate(),
+    end: now2.toDate(),
+  });
+
+  const { notes, title, start, end } = formValues;
+
+  const handleInputChange = ({ target }) => {
+    setFormValues({
+      ...formValues,
+      [target.name]: target.value,
+    });
+  };
+
+  const closeModal = () => {
+    dispatch(uiCloseModal());
+  };
   const handleStartDateChange = (e) => {
     setDateStart(e);
+    setFormValues({
+      ...formValues,
+      start: e,
+    });
+    console.log(e);
   };
   const handleEndDateChange = (e) => {
     setDateEnd(e);
+    setFormValues({
+      ...formValues,
+      end: e,
+    });
+    console.log(e);
+  };
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+    const momentStart = moment(start);
+    const momentEnd = moment(end);
+
+    if (momentStart.isSameOrAfter(momentEnd)) {
+      return Swal.fire(
+        "Erro",
+        "A data de remate ten que ser maior da de comezo",
+        "error"
+      );
+    }
+    if (title.trimEnd().length < 2) {
+      return setTitleValid(false);
+    }
+
+    //TODO: persistencia
+
+    setTitleValid(true);
+    closeModal();
   };
   return (
     <Modal
-      isOpen={true}
+      isOpen={modalOpen}
       //   onAfterOpen={afterOpenModal}
       onRequestClose={closeModal}
       style={customStyles}
@@ -40,7 +97,7 @@ export const CalendarModal = () => {
     >
       <h1> Novo evento </h1>
       <hr />
-      <form className="container">
+      <form className="container" onSubmit={handleSubmitForm}>
         <div className="form-group">
           <label>Data e hora comezo</label>
           <DateTimePicker
@@ -65,10 +122,12 @@ export const CalendarModal = () => {
           <label>Título e notas</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${!titleValid && "is-invalid"}`}
             placeholder="Título do evento"
             name="title"
             autoComplete="off"
+            value={title}
+            onChange={handleInputChange}
           />
           <small id="emailHelp" className="form-text text-muted">
             Unha descripción curta
@@ -82,6 +141,8 @@ export const CalendarModal = () => {
             placeholder="Notas"
             rows="5"
             name="notes"
+            value={notes}
+            onChange={handleInputChange}
           ></textarea>
           <small id="emailHelp" className="form-text text-muted">
             Información adicional
