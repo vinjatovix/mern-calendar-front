@@ -9,7 +9,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import "moment/locale/gl";
 import { CalendarEvent } from "./CalendarEvent";
 import { CalendarModal } from "./CalendarModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { uiOpenModal } from "../../actions/ui";
 import { eventSetActive } from "../../actions/events";
 import { AddNewFab } from "../ui/AddNewFab";
@@ -17,22 +17,24 @@ import { AddNewFab } from "../ui/AddNewFab";
 moment.locale("gl");
 const localizer = momentLocalizer(moment);
 
-const events = [
-  {
-    title: "Reunion",
-    start: moment().toDate(),
-    end: moment().add(2, "hours").toDate(),
-    bgcolor: "#fafaaf",
-    notes: "cualquier cosa",
-    user: {
-      _id: "12",
-      name: "pepe",
-    },
-  },
-];
+// const events = [
+//   {
+//     title: "Reunion",
+//     start: moment().toDate(),
+//     end: moment().add(2, "hours").toDate(),
+//     bgcolor: "#fafaaf",
+//     notes: "cualquier cosa",
+//     user: {
+//       _id: "12",
+//       name: "pepe",
+//     },
+//   },
+// ];
 
 export const CalendarScreen = () => {
   const dispatch = useDispatch();
+  //TODO: leer los eventos del store
+  const {events} = useSelector((state) => state.calendar);
 
   const [lastView, setLastView] = useState(
     localStorage.getItem("lastView") || "month"
@@ -42,7 +44,8 @@ export const CalendarScreen = () => {
   };
   const onSelectEvent = (e) => {
     dispatch(eventSetActive(e));
-    dispatch(uiOpenModal);
+    // dispatch(uiOpenModal);
+    
   };
   const onViewChange = (e) => {
     setLastView(e);
