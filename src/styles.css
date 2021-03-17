@@ -73,3 +73,11 @@ body {
   position: fixed;
   right: 1rem;
 }
+.fab-danger {
+  border-radius: 12px;
+  bottom: 1rem;
+  font-size: 1rem;
+  padding: 0.5rem;
+  position: fixed;
+  left: 1rem;
+}
