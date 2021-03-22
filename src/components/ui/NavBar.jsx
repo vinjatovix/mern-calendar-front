@@ -4,14 +4,14 @@ import { startLogout } from "../../actions/auth";
 
 export const NavBar = () => {
   const dispatch = useDispatch();
-  const { username } = useSelector((state) => state.auth);
+  const { name } = useSelector((state) => state.auth);
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(startLogout());
   };
   return (
     <div className="navbar navbar-dark bg-dark mb-4">
-      <span className="navbar-brand">{username}</span>
+      <span className="navbar-brand">{name}</span>
 
       <button className="btn btn-outline-danger" onClick={handleLogout}>
         <i className="fa fa-sign-out-alt"></i>

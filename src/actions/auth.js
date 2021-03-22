@@ -6,11 +6,11 @@ import {
   processTokenResponse,
 } from "../helpers/API/api-helpers";
 
-export const startRegister = (email, password, username) => {
+export const startRegister = (email, password, name) => {
   return async (dispatch) => {
     const res = await noTokenFetch(
       endpoints.register,
-      { email, password, username },
+      { email, password, name },
       "POST"
     );
     const body = await res.json();

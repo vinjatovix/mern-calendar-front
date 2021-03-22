@@ -8,7 +8,7 @@ export const processTokenResponse = (body, dispatch) => {
     dispatch(
       login({
         uid: body.uid,
-        username: body.username,
+        name: body.name,
       })
     );
   } else {

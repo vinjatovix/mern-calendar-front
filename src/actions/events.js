@@ -1,9 +1,10 @@
 import { endpoints, tokenFetch } from "../helpers/API/api-helpers";
+import { prepareEvents } from "../helpers/prepareEvents";
 import { types } from "../types/types";
 
 export const eventStartAddNew = (event) => {
   return async (dispatch, getState) => {
-    const { uid, username } = getState().auth;
+    const { uid, name } = getState().auth;
     try {
       const res = await tokenFetch(endpoints.events, event, "POST");
       const body = await res.json();
@@ -11,9 +12,8 @@ export const eventStartAddNew = (event) => {
         event.id = body.event.id;
         event.user = {
           _id: uid,
-          username: username,
+          name: name,
         };
-        console.log(event);
         dispatch(eventAddNew(event));
       }
     } catch (error) {
@@ -21,6 +21,25 @@ export const eventStartAddNew = (event) => {
     }
   };
 };
+
+export const eventStartLoading = () => {
+  return async (dispatch) => {
+    try {
+      const res = await tokenFetch(endpoints.events);
+      const body = await res.json();
+      const events = prepareEvents(body.events);
+      console.log(events);
+      dispatch(eventsLoaded(events));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const eventsLoaded = (events) => ({
+  type: types.eventsLoaded,
+  payload: events,
+});
 
 const eventAddNew = (event) => ({
   type: types.eventAddNew,
