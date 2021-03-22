@@ -1,5 +1,6 @@
 export const endpoints = {
-    login: "auth",
-    register: "auth/register",
-    renew: "auth/renew",
+  login: "auth",
+  register: "auth/register",
+  renew: "auth/renew",
+  events: "events",
 };
